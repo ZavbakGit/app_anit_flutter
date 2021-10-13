@@ -1,0 +1,130 @@
+swagger: '2.0'
+info:
+  description: ANIT 2021-04-27
+  version: 1.0.0
+  title: АНИТ HTTP сервис
+  contact:
+    email: ag@79900.ru
+# host: 5.8.207.81:34864
+host: 172.31.255.150
+basePath: /copy_erp/hs/by_openapi
+schemes:
+  - http
+tags:
+  - name: common
+    description: Общие
+  - name: tasks
+    description: Задачи
+paths:
+  /auth:
+    get:
+      tags:
+        - common
+      summary: get user
+      description: Получение данных user
+      operationId: getUser
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Вернуться данные по User
+          schema:
+            $ref: '#/definitions/User'
+        '400':
+          description: error
+          schema:
+            $ref: '#/definitions/Error'
+  /catalog:
+    get:
+      tags:
+        - common
+      summary: Список справочник
+      description: Получает элементы справочника
+      operationId: getCatalog
+      parameters:
+        - in: query
+          name: catalog
+          description: Наименование справочника
+          type: string
+          required: true
+        - in: query
+          name: count
+          description: Количество записей
+          type: integer
+          required: true
+        - in: query
+          name: offset
+          description: Сдвиг
+          type: integer
+          required: true
+        - in: query
+          name: search
+          description: Строка поиска
+          type: string
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Вернуться данные по User
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/CatalogItem'
+        '400':
+          description: array catalog
+          schema:
+            $ref: '#/definitions/Error'  
+security:
+  - basicAuth: []
+securityDefinitions:
+  basicAuth:
+    type: basic
+definitions:
+  Error:
+    description: Ошибка
+    type: object
+    properties:
+      code:
+        type: integer
+        description: Код ошибки
+      description:
+        type: string
+        description: Описание ошибки
+  User:
+    description: Пользователь
+    type: object
+    properties:
+      guid:
+        type: string
+        description: Уникальный идентификатор
+      code:
+        type: string
+        description: Код
+      name:
+        type: string
+        description: Наименование
+      base_auth_string:
+        type: string
+        description: Строка авторизации
+  CatalogItem:
+    description: Элемент справочника
+    type: object
+    properties:
+      guid:
+        type: string
+        description: Уникальный идентификатор
+      code:
+        type: string
+        description: Код
+      name:
+        type: string
+        description: Наименование
+      mark_deletion:
+        type: boolean
+        description: Пометка удаления
+  CatalogItemArray:
+    type: array
+    items:
+      $ref: '#/definitions/CatalogItem'
+      
+
