@@ -41,9 +41,20 @@ logger.wtf("What a terrible failure log");
 
 6. auth_service - дергают роутер, как соотносится по слоям, должно быть в слое пресентер?
 
-```php
-//php code
-$foo = new BarClass();
+```dart
+@module
+abstract class AppModule {
+
+  @injectable //@lazySingleton
+  ApiDataSource getApiDataSource(@factoryParam AuthBaseModel? authBaseModel) =>
+      ApiDataSource(authBaseModel);
+
+  @lazySingleton
+  AuthBaseModel getAuthBaseModel() => AuthBaseModel(
+        password: dotenv.env['TEST_PASS'] ?? '',
+        user: dotenv.env['TEST_USER'] ?? '',
+      );
+}
 ```
 
 
