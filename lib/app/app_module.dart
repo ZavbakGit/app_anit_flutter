@@ -6,7 +6,8 @@ import 'package:injectable/injectable.dart';
 @module
 abstract class AppModule {
 
-  @injectable //@lazySingleton
+  //@injectable
+  @lazySingleton
   ApiDataSource getApiDataSource(@factoryParam AuthBaseModel? authBaseModel) =>
       ApiDataSource(authBaseModel);
 
