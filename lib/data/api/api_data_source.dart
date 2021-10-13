@@ -9,16 +9,20 @@ import 'package:injectable/injectable.dart';
 import 'auth_base_model.dart';
 import 'converter.dart';
 
-@injectable
+//@lazySingleton //@injectable
 class ApiDataSource {
   final AuthBaseModel? _authBaseModel;
 
+  // ApiDataSource(@factoryParam this._authBaseModel){
+  //   _init();
+  // }
 
-  ApiDataSource(@factoryParam this._authBaseModel) {
+  ApiDataSource(this._authBaseModel){
     _init();
   }
 
   late final Swagger api;
+
 
   void _init() {
     final client = ChopperClient(

@@ -9,5 +9,7 @@ final locator = GetIt.instance;
 @injectableInit
 void setupLocator() => $initGetIt(locator);
 
-//flutter pub run build_runner --delete-conflicting-outputs
 //flutter pub run build_runner build
+//flutter pub run build_runner --delete-conflicting-outputs
+
+

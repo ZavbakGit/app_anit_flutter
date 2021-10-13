@@ -21,4 +21,31 @@ create library: flutter create --template=package chopper_api_anit
 Generate: flutter pub run build_runner build
 flutter pub run build_runner --delete-conflicting-outputs
 
+1. Вопросы конвертер UTF8
+2. Наверное ошибка в AuthRepository getUser (localUser != null)
+3. inited.complete();
+
+4. Как пользоваться
+
+logger.v("Verbose log");
+
+logger.d("Debug log");
+
+logger.i("Info log");
+
+logger.w("Warning log");
+
+logger.e("Error log");
+
+logger.wtf("What a terrible failure log");
+
+6. auth_service - дергают роутер, как соотносится по слоям, должно быть в слое пресентер?
+
+```php
+//php code
+$foo = new BarClass();
+```
+
+
+
 

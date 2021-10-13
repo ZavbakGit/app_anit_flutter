@@ -11,8 +11,12 @@ import 'catalog_viewmodel.dart';
 class CatalogView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final viewModel  = locator<CatalogViewModel>();
-    //final viewModel  = CatalogViewModel();
+    final viewModel = locator<CatalogViewModel>();
+
+    void _onClick() {
+      viewModel.getCatalog(
+          catalog: 'Номенклатура', count: 30, offset: 0, search: '1C');
+    }
 
     return ViewModelBuilder<CatalogViewModel>.reactive(
       builder: (context, model, child) => Scaffold(
@@ -28,17 +32,10 @@ class CatalogView extends StatelessWidget {
             : Center(
                 child: model.isBusy
                     ? const CircularProgressIndicator()
-                    : Text(model.getCreate()),
+                    : Text(model.listCatalogItem.cast().toString()),
               ),
         floatingActionButton: FloatingActionButton(
-          onPressed: () => {}
-          //     model.getCatalog(
-          //   catalog: 'Номенклатура',
-          //   count: 10,
-          //   offset: 0,
-          //   search: '1C',
-          // )
-          ,
+          onPressed: _onClick,
         ),
       ),
       viewModelBuilder: () => viewModel,

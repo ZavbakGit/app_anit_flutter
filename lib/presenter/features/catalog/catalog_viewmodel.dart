@@ -1,57 +1,41 @@
 import 'package:app_anit_flutter/data/api/api_data_source.dart';
+import 'package:chopper_api_anit/swagger_generated_code/swagger.models.swagger.dart';
 import 'package:injectable/injectable.dart';
 import 'package:stacked/stacked.dart';
 
 @injectable
 class CatalogViewModel extends BaseViewModel {
+  final ApiDataSource? _apiDataSource;
 
-  late final DateTime initData;
+  List<CatalogItem> listCatalogItem = [];
 
-  String  getCreate() => initData.toIso8601String();
+  CatalogViewModel(@factoryParam this._apiDataSource);
 
-  CatalogViewModel(){
-    init();
+  Future<void> getCatalog({
+    required String catalog,
+    required int count,
+    required int offset,
+    String? search,
+  }) async {
+    setBusy(true);
+
+    await Future.delayed(const Duration(seconds: 2));
+
+    final response = await _apiDataSource!.api.catalogGet(
+      catalog: catalog,
+      count: count,
+      offset: offset,
+      search: search,
+    );
+
+    setBusy(false);
+
+    if (response.statusCode == 200) {
+      listCatalogItem = response.body ?? [];
+    } else {
+      setError('Error query');
+    }
+
+    notifyListeners();
   }
-
-  Future<void> init() async{
-    initData = DateTime.now();
-    // while (true) {
-    //   await Future.delayed(const Duration(seconds: 1));
-    //   print('live');
-    // }
-  }
-
-
-  // final ApiDataSource _apiDataSource;
-  //
-  // CatalogViewModel(this._apiDataSource);
-  //
-  // Future<List<CatalogItem>> getCatalog ({
-  //   required String catalog,
-  //   required int count,
-  //   required int offset,
-  //   String? search,
-  // }) async {
-  //
-  //   setBusy(true);
-  //
-  //   final response = await _apiDataSource.api.catalogGet(
-  //     catalog: catalog,
-  //     count: count,
-  //     offset: offset,
-  //     search: search,
-  //   );
-  //
-  //   setBusy(false);
-  //
-  //   if (response.statusCode == 200) {
-  //     return response.body ?? [];
-  //   } else {
-  //     throw Exception(response.body);
-  //   }
-  //
-  //
-  // }
-
-
 }
