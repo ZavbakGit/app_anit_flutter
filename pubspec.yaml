@@ -13,6 +13,8 @@ dependencies:
 
   #State manager
   stacked: ^2.2.5
+  stacked_hooks:
+  flutter_hooks:
 
   #stacked_services:
   stacked_services:
@@ -26,11 +28,14 @@ dependencies:
 
   # Other
   logger:
+  easy_debounce: ^2.0.1
+  uuid: ^3.0.5
 
   # Flavors
   flutter_dotenv: ^5.0.2
 
   # Network
+  dio: ^4.0.0
   chopper: ^4.0.1
   chopper_api_anit:
     path: chopper_api_anit

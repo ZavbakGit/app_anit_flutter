@@ -1,17 +1,31 @@
+import 'dart:async';
+
 import 'package:app_anit_flutter/data/api/api_data_source.dart';
 import 'package:chopper_api_anit/swagger_generated_code/swagger.models.swagger.dart';
 import 'package:injectable/injectable.dart';
 import 'package:stacked/stacked.dart';
 
-@injectable
+//@injectable
 class CatalogViewModel extends BaseViewModel {
   final ApiDataSource? _apiDataSource;
+  late String timeCreate;
+  Timer? _debounce;
 
   List<CatalogItem> listCatalogItem = [];
+  String _searchQuery = '';
 
-  CatalogViewModel(@factoryParam this._apiDataSource);
+  query(String value){
+    if (_searchQuery != value && value.length > 2){
+      _searchQuery = value;
+      _getCatalog(catalog: 'Номенклатура',count: 50,offset: 0,search: _searchQuery);
+    }
+  }
 
-  Future<void> getCatalog({
+  CatalogViewModel(@factoryParam this._apiDataSource) {
+    timeCreate = DateTime.now().toString();
+  }
+
+  Future<void> _getCatalog({
     required String catalog,
     required int count,
     required int offset,
@@ -19,14 +33,24 @@ class CatalogViewModel extends BaseViewModel {
   }) async {
     setBusy(true);
 
+
+
     await Future.delayed(const Duration(seconds: 2));
 
-    final response = await _apiDataSource!.api.catalogGet(
+    final response = await _apiDataSource!.api
+        .catalogGet(
       catalog: catalog,
       count: count,
       offset: offset,
       search: search,
-    );
+    )
+        .catchError((e) {
+
+      listCatalogItem = [];
+      setError(e.toString());
+
+      //Тут надо вернуть Future
+    });
 
     setBusy(false);
 
@@ -37,5 +61,11 @@ class CatalogViewModel extends BaseViewModel {
     }
 
     notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _debounce?.cancel();
   }
 }
