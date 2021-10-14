@@ -46,20 +46,20 @@ class CatalogView extends StatelessWidget {
 
 Widget getData(CatalogViewModel model) {
   return model.hasError
-      ? _getError()
+      ? _getError(model)
       : Center(
           child: model.isBusy
               ? const CircularProgressIndicator()
               : _getList(model.listCatalogItem));
 }
 
-Widget _getError() {
+Widget _getError(CatalogViewModel model) {
   return Container(
     color: Colors.red,
     alignment: Alignment.center,
-    child: const Text(
-      'An error has occurred while running the future',
-      style: TextStyle(color: Colors.white),
+    child:  Text(
+      model.error(model),
+      style: const TextStyle(color: Colors.white),
     ),
   );
 }
@@ -100,7 +100,7 @@ class _StringForm extends HookViewModelWidget<CatalogViewModel> {
       onChanged: (str) {
         EasyDebounce.debounce(
           'search_field_debounce', // <-- An ID for this particular debouncer
-          const Duration(milliseconds: 3000), // <-- The debounce duration
+          const Duration(milliseconds: 500), // <-- The debounce duration
           () => {model.query(str)}, // <-- The target method
         );
       },

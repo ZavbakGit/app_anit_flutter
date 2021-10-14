@@ -9,15 +9,15 @@ import 'package:stacked/stacked.dart';
 class CatalogViewModel extends BaseViewModel {
   final ApiDataSource? _apiDataSource;
   late String timeCreate;
-  Timer? _debounce;
 
   List<CatalogItem> listCatalogItem = [];
   String _searchQuery = '';
 
-  query(String value){
-    if (_searchQuery != value && value.length > 2){
+  query(String value) {
+    if (_searchQuery != value && value.length > 2) {
       _searchQuery = value;
-      _getCatalog(catalog: 'Номенклатура',count: 50,offset: 0,search: _searchQuery);
+      _getCatalog(
+          catalog: 'Номенклатура', count: 50, offset: 0, search: _searchQuery);
     }
   }
 
@@ -31,41 +31,33 @@ class CatalogViewModel extends BaseViewModel {
     required int offset,
     String? search,
   }) async {
+    listCatalogItem = [];
+
+    clearErrors();
     setBusy(true);
 
+    //await Future.delayed(const Duration(seconds: 2));
 
+    try {
+      final response = await _apiDataSource!.api.catalogGet(
+        catalog: catalog,
+        count: count,
+        offset: offset,
+        search: search,
+      );
+      setBusy(false);
 
-    await Future.delayed(const Duration(seconds: 2));
-
-    final response = await _apiDataSource!.api
-        .catalogGet(
-      catalog: catalog,
-      count: count,
-      offset: offset,
-      search: search,
-    )
-        .catchError((e) {
-
-      listCatalogItem = [];
+      if (response.statusCode == 200) {
+        listCatalogItem = response.body ?? [];
+      } else {
+        throw Exception('Error status code response');
+        setError('Error query');
+      }
+    } catch (e) {
+      print(e);
       setError(e.toString());
-
-      //Тут надо вернуть Future
-    });
-
-    setBusy(false);
-
-    if (response.statusCode == 200) {
-      listCatalogItem = response.body ?? [];
-    } else {
-      setError('Error query');
+    } finally {
+      notifyListeners();
     }
-
-    notifyListeners();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _debounce?.cancel();
   }
 }
