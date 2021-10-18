@@ -12,7 +12,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load();
 
-  //Пока с ошибкой разбираюсь буду инжектить с параметрами в сингельтон сдесь
+  //Пока с ошибкой разбираюсь буду инжектить с параметрами в сингельтон сдесь!
   locator.registerSingleton<ApiDataSource>(ApiDataSource(
     locator<AuthBaseModel>(),
   ));
