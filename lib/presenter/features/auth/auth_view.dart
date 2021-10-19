@@ -63,8 +63,6 @@ class AuthView extends StatelessWidget {
       );
     }
 
-
-
     List<Widget> _buildChildren() {
       return [
         const Text('Авторизация'),
@@ -99,5 +97,6 @@ class AuthView extends StatelessWidget {
       ),
       viewModelBuilder: () => viewModel,
     );
+
   }
 }

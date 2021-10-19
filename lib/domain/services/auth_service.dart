@@ -7,24 +7,39 @@ import 'package:app_anit_flutter/data/local/pref_data_source.dart';
 import 'package:chopper/chopper.dart';
 import 'package:chopper_api_anit/swagger_generated_code/swagger.models.swagger.dart';
 
-
-class AuthService{
-
+class AuthService {
   final PrefDataSource _prefDataSource;
+  final keyUser = 'USER';
 
   AuthService(this._prefDataSource);
 
-  Future<bool> signIn(String login,String pass) async{
-    AuthBaseModel _authModel = AuthBaseModel(login: login, password: pass);
-    ApiDataSource _apiDataSource = ApiDataSource(_authModel.strAuth);
-    Response response = await _apiDataSource.api.authGet();
+  Future<void> loadCach() async {
+    await Future.delayed(const Duration(seconds: 5));
+    final userString = await _prefDataSource.get(keyUser);
+    final user = User.fromJsonFactory(jsonDecode(userString!));
 
-    if (response.statusCode != 200) throw Exception('Error status code response');
-
-    User user = response.body!.copyWith(baseAuthString: _authModel.strAuth);
-    await _prefDataSource.save('user', jsonEncode(user.toJson()));
-
-    return true;
+    if (user.baseAuthString!.isNotEmpty) {
+      await _requestAndSave(user.baseAuthString!);
+    }else{
+      throw Exception('User is null');
+    }
   }
 
+  Future<void> signIn(String login, String pass) async {
+    AuthBaseModel _authModel = AuthBaseModel(login: login, password: pass);
+    await _requestAndSave(_authModel.strAuth);
+  }
+
+
+  Future<void> _requestAndSave(String strAuth) async {
+    ApiDataSource _apiDataSource = ApiDataSource(strAuth);
+    Response response = await _apiDataSource.api.authGet();
+
+    if (response.statusCode != 200) {
+      throw Exception('Error status code response');
+    }
+
+    final user = (response.body! as User).copyWith(baseAuthString: strAuth);
+    await _prefDataSource.save(keyUser, jsonEncode(user.toJson()));
+  }
 }
