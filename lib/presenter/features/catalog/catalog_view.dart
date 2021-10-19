@@ -86,13 +86,6 @@ class _StringForm extends HookViewModelWidget<CatalogViewModel> {
 
   @override
   Widget buildViewModelWidget(BuildContext context, CatalogViewModel model) {
-    print('_StringForm rebuild');
-
-    // return SearchTextField(
-    //   searchFunctionCall: (text) => model.query(text),
-    //   debounce: const Duration(seconds: 3),
-    // );
-
     var text = useTextEditingController();
 
     return TextField(

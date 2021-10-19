@@ -14,6 +14,6 @@ abstract class AppModule {
   @lazySingleton
   AuthBaseModel getAuthBaseModel() => AuthBaseModel(
         password: dotenv.env['TEST_PASS'] ?? '',
-        user: dotenv.env['TEST_USER'] ?? '',
+        login: dotenv.env['TEST_USER'] ?? '',
       );
 }

@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+@lazySingleton
 class PrefDataSource {
   PrefDataSource() {
     init();
@@ -15,13 +17,7 @@ class PrefDataSource {
     _inited.complete();
   }
 
-  Future<void> clear() async {
-    await prefs.clear();
-  }
-
-
   Future<void> save(String key,String str) async {
-    await clear();
     prefs.setString(key, str);
   }
 

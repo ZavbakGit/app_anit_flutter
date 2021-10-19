@@ -15,13 +15,13 @@ import 'converter.dart';
 
 //@lazySingleton //@injectable
 class ApiDataSource {
-  final AuthBaseModel? _authBaseModel;
+  final String authString;
 
   // ApiDataSource(@factoryParam this._authBaseModel){
   //   _init();
   // }
 
-  ApiDataSource(this._authBaseModel) {
+  ApiDataSource(this.authString) {
     _init();
   }
 
@@ -36,7 +36,7 @@ class ApiDataSource {
       converter: CommonJsonSerializableConverter(),
       interceptors: [
         LoggerInterceptor(),
-        AuthApiInterceptor(_authBaseModel),
+        AuthApiInterceptor(authString),
       ],
     );
     api = Swagger.create(client);
