@@ -9,11 +9,23 @@ class AuthNewViewModel extends BaseViewModel {
 
   AuthNewState state = FormAuthNewState();
 
-  AuthNewViewModel(this._authService);
+  AuthNewViewModel(this._authService){
+    _loadCach();
+  }
 
   void setState(AuthNewState state) {
     this.state = state;
     notifyListeners();
+  }
+
+  Future<void> _loadCach() async {
+    setState(LoadAuthNewState());
+    try {
+      await _authService.loadCach();
+      MyApp.router.replace(const TestRouterView());
+    } catch (e) {
+      setState(FormAuthNewState(errorMessage: ''));
+    }
   }
 
   Future<void> signIn(String login, String pass) async {

@@ -1,4 +1,5 @@
 import 'package:app_anit_flutter/presenter/features/auth/auth_viewmodel.dart';
+import 'package:app_anit_flutter/presenter/features/auth_new/auth_new_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
@@ -26,6 +27,10 @@ void main() async {
   ));
 
   locator.registerFactory<AuthViewModel>(() => AuthViewModel(
+    locator<AuthService>(),
+  ));
+
+  locator.registerFactory<AuthNewViewModel>(() => AuthNewViewModel(
     locator<AuthService>(),
   ));
 
