@@ -14,7 +14,7 @@ class AuthService {
   AuthService(this._prefDataSource);
 
   Future<void> loadCach() async {
-    await Future.delayed(const Duration(seconds: 5));
+    //await Future.delayed(const Duration(seconds: 5));
     final userString = await _prefDataSource.get(keyUser);
     final user = User.fromJsonFactory(jsonDecode(userString!));
 

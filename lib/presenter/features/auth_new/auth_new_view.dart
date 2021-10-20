@@ -1,7 +1,6 @@
 import 'package:app_anit_flutter/app/locator.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
-
 import 'auth_new_state.dart';
 import 'auth_new_viewmodel.dart';
 
@@ -81,13 +80,11 @@ class AuthNewView extends StatelessWidget {
       const Text('Авторизация (новая)'),
       const SizedBox(height: 64.0),
 
-
-
-      if (model.state is LoadAuthNewState)...[
+      if (model.getState is LoadAuthNewState)...[
         const CircularProgressIndicator()
       ],
 
-      if (model.state is FormAuthNewState)...[
+      if (model.getState is FormAuthNewState)...[
         _buildLoginTextField(),
         const SizedBox(height: 8.0),
         _buildPasswordTextField(),
@@ -98,7 +95,7 @@ class AuthNewView extends StatelessWidget {
         SizedBox(
           height: 64.0,
           child: Text(
-            (model.state as FormAuthNewState).errorMessage??'',
+            (model.getState as FormAuthNewState).errorMessage??'',
             style: const TextStyle(color: Colors.red),
           ),
         ),

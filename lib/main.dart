@@ -1,5 +1,7 @@
 import 'package:app_anit_flutter/presenter/features/auth/auth_viewmodel.dart';
 import 'package:app_anit_flutter/presenter/features/auth_new/auth_new_viewmodel.dart';
+import 'package:app_anit_flutter/presenter/features/auth_new/auth_new_viewmodel_impl.dart';
+import 'package:app_anit_flutter/presenter/features/catalog_new/catalog_new_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
@@ -30,9 +32,12 @@ void main() async {
     locator<AuthService>(),
   ));
 
-  locator.registerFactory<AuthNewViewModel>(() => AuthNewViewModel(
+  locator.registerFactory<AuthNewViewModel>(() => AuthNewViewModelImpl(
     locator<AuthService>(),
   ));
+
+  //for test
+  //locator.registerFactory<CatalogNewViewModel>(() => MockCatalogViewModel());
 
   runApp(const MyApp());
 }
